@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asme | Access for the curious</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-serif: 'Instrument Serif', serif;
+            --font-sans: 'Poppins', sans-serif;
+        }
+        body {
+            background: #000;
+            color: #fff;
+            font-family: var(--font-sans);
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .asme-nav {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 20;
+        }
+        .nav-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            transform: translateY(-15%); /* Spec matching offset */
+        }
+        .hero-heading {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 10vw, 5.5rem);
+            line-height: 1;
+            margin-bottom: 2.5rem;
+            letter-spacing: -0.02em;
+            font-weight: 400;
+        }
+        .input-container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .asme-input-bar {
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(8px);
+            border-radius: 9999px;
+            padding: 0.5rem 0.5rem 0.5rem 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .asme-input-bar input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            font-family: var(--font-sans);
+        }
+        .asme-input-bar input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+        .circle-submit {
+            width: 44px;
+            height: 44px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .circle-submit:hover {
+            transform: scale(1.1);
+        }
+        .social-footer {
+            padding: 3rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 20;
+        }
+        .social-btn {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+        }
+        .error-toast {
+            position: absolute;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 107, 107, 0.15);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <!-- ── Background Video (Shifted Down 17%) ── -->
+    <div class="video-container" style="position: fixed; inset: 0; z-index: -1;">
+        <video id="asmeVideo" class="video-bg" muted playsinline style="width: 100%; height: 100%; object-fit: cover; transform: translateY(17%); opacity: 0;">
+            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    {% if error %}
+    <div class="error-toast">{{ error }}</div>
+    {% endif %}
+
+    <div class="main-wrapper">
+        <nav class="asme-nav">
+            <div class="nav-inner">
+                <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    MAAG
+                </div>
+                <a href="/" style="text-decoration: none; color: white; font-size: 0.8rem; letter-spacing: 0.05em; opacity: 0.6;">Return to origin</a>
+            </div>
+        </nav>
+
+        <main class="hero-section">
+            <h1 class="hero-heading">Built for the CUCVS</h1>
+            
+            <form method="POST" class="input-container">
+                <div class="asme-input-bar liquid-glass">
+                    <input type="text" name="username" placeholder="Administrative ID" required>
+                </div>
+                <div class="asme-input-bar liquid-glass">
+                    <input type="password" name="password" placeholder="Secure Password" required>
+                    <button type="submit" class="circle-submit">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </button>
+                </div>
+            </form>
+
+            <p style="margin-top: 2rem; color: rgba(255,255,255,0.7); font-size: 0.95rem; max-width: 450px; line-height: 1.6; letter-spacing: 0.02em; font-weight: 300;">
+                Secure administrative access to the CU.devs infrastructure. Manage the participant registry, monitor consensus frequencies, and oversee the digital election cycle with high-fidelity precision.
+            </p>
+        </main>
+
+        <footer class="social-footer">
+            <div class="social-btn liquid-glass">●</div>
+            <div class="social-btn liquid-glass">●</div>
+            <div class="social-btn liquid-glass">●</div>
+        </footer>
+    </div>
+
+    <script>
+        const video = document.getElementById('asmeVideo');
+        let fadingOut = false;
+        let animationFrame;
+        function fade(targetOpacity, duration, callback) {
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+            const startOpacity = parseFloat(video.style.opacity) || 0;
+            const startTime = performance.now();
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                video.style.opacity = startOpacity + (targetOpacity - startOpacity) * progress;
+                if (progress < 1) animationFrame = requestAnimationFrame(animate);
+                else if (callback) callback();
+            }
+            animationFrame = requestAnimationFrame(animate);
+        }
+        video.addEventListener('timeupdate', () => {
+            if (!fadingOut && (video.duration - video.currentTime) <= 0.55) {
+                fadingOut = true;
+                fade(0, 500);
+            }
+        });
+        video.addEventListener('ended', () => {
+            video.style.opacity = 0;
+            setTimeout(() => { video.currentTime = 0; video.play(); fadingOut = false; fade(1, 500); }, 100);
+        });
+        window.addEventListener('load', () => { video.play(); fade(1, 500); });
+    </script>
+</body>
+</html>

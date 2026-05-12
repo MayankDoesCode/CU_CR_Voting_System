@@ -1,0 +1,1 @@
+console.log("CU Voting System Loaded");

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asme | Control the CUCVS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --font-serif: 'Instrument Serif', serif;
+            --font-sans: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: var(--font-sans);
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .asme-nav {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 20;
+        }
+
+        .nav-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            transform: translateY(-10%);
+        }
+
+        .hero-heading {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            line-height: 1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+            font-weight: 400;
+        }
+
+        /* Dashboard Card */
+        .admin-glass-card {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .asme-input-bar {
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(8px);
+            border-radius: 9999px;
+            padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .asme-input-bar input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            font-family: var(--font-sans);
+        }
+
+        .circle-submit {
+            width: 38px;
+            height: 38px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .circle-submit:hover {
+            transform: scale(1.1);
+        }
+
+        /* Registry Scroll */
+        .registry-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.75rem;
+        }
+
+        .registry-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .registry-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+
+        .registry-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .candidate-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .candidate-row span {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .remove-link {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ── Background Video (Shifted Down 17%) ── -->
+    <div class="video-container" style="position: fixed; inset: 0; z-index: -1;">
+        <video id="asmeVideo" class="video-bg" muted playsinline
+            style="width: 100%; height: 100%; object-fit: cover; transform: translateY(17%); opacity: 0;">
+            <source
+                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_115001_bcdaa3b4-03de-47e7-ad63-ae3e392c32d4.mp4"
+                type="video/mp4">
+        </video>
+    </div>
+
+    <div class="main-wrapper">
+        <nav class="asme-nav">
+            <div class="nav-inner">
+                <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                        </path>
+                    </svg>
+                    MAAG.Ctrl
+                </div>
+                <a href="/logout"
+                    style="text-decoration: none; color: white; font-size: 0.8rem; letter-spacing: 0.05em; opacity: 0.6;">Terminate
+                    session</a>
+            </div>
+        </nav>
+
+        <main class="hero-section">
+            <h1 class="hero-heading">Control the CU.devs</h1>
+
+            <div class="admin-glass-card liquid-glass">
+                <p
+                    style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 1.5rem;">
+                    Deployment Registry</p>
+
+                <!-- Add Candidate Form -->
+                <form method="POST">
+                    <div class="asme-input-bar liquid-glass">
+                        <input type="text" name="candidate" placeholder="Register New Participant" required>
+                        <button type="submit" class="circle-submit">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="registry-scroll">
+                    {% for candidate in candidates %}
+                    <div class="candidate-row">
+                        <span>{{ candidate[1] }}</span>
+                        <a href="/delete_candidate/{{ candidate[0] }}" class="remove-link">Remove</a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.75rem; color: rgba(255,255,255,0.4);">Active Nodes: {{ candidates|length
+                        }}</span>
+                    <a href="/results"
+                        style="color: white; font-size: 0.75rem; text-decoration: none; opacity: 0.8;">View Results
+                        →</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const video = document.getElementById('asmeVideo');
+        let fadingOut = false;
+        let animationFrame;
+        function fade(targetOpacity, duration, callback) {
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+            const startOpacity = parseFloat(video.style.opacity) || 0;
+            const startTime = performance.now();
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                video.style.opacity = startOpacity + (targetOpacity - startOpacity) * progress;
+                if (progress < 1) animationFrame = requestAnimationFrame(animate);
+                else if (callback) callback();
+            }
+            animationFrame = requestAnimationFrame(animate);
+        }
+        video.addEventListener('timeupdate', () => {
+            if (!fadingOut && (video.duration - video.currentTime) <= 0.55) {
+                fadingOut = true;
+                fade(0, 500);
+            }
+        });
+        video.addEventListener('ended', () => {
+            video.style.opacity = 0;
+            setTimeout(() => { video.currentTime = 0; video.play(); fadingOut = false; fade(1, 500); }, 100);
+        });
+        window.addEventListener('load', () => { video.play(); fade(1, 500); });
+    </script>
+</body>
+
+</html>

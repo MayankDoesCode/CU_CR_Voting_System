@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom | Chandigarh University Voting</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Reverting to Bloom/Earth UI Styles */
+        body {
+            background: #000;
+            overflow-y: auto;
+            height: auto;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .bloom-video {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+        }
+
+        .bloom-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .bloom-nav {
+            position: relative;
+            z-index: 100;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bloom-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        .bloom-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(50px);
+            -webkit-backdrop-filter: blur(50px);
+            border-radius: 2.5rem;
+            padding: 4rem 3rem;
+            width: 100%;
+            max-width: 500px;
+            margin: 4rem auto;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .bloom-h1 {
+            font-size: 3rem;
+            font-weight: 500;
+            letter-spacing: -0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .bloom-h1 em {
+            font-family: 'Source Serif 4', serif;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .voter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-top: 2rem;
+        }
+
+        .voter-input,
+        .voter-select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.25rem;
+            border-radius: 1.25rem;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .vote-button {
+            background: white;
+            color: black;
+            font-weight: 600;
+            padding: 1.25rem;
+            border-radius: 1.25rem;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 1rem;
+        }
+
+        .vote-button:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+
+<body>
+    <video class="bloom-video" autoplay loop muted playsinline>
+        <source
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4"
+            type="video/mp4">
+    </video>
+    <div class="bloom-overlay"></div>
+
+    <nav class="bloom-nav">
+        <div class="bloom-logo">
+            <svg width="32" height="32" viewBox="0 0 64 64" fill="white">
+                <circle cx="32" cy="28" r="4" />
+                <ellipse cx="32" cy="18" rx="6" ry="11" fill-opacity="0.9" />
+                <ellipse cx="32" cy="18" rx="6" ry="11" fill-opacity="0.7" transform="rotate(72 32 28)" />
+                <ellipse cx="32" cy="18" rx="6" ry="11" fill-opacity="0.7" transform="rotate(144 32 28)" />
+                <ellipse cx="32" cy="18" rx="6" ry="11" fill-opacity="0.7" transform="rotate(216 32 28)" />
+                <ellipse cx="32" cy="18" rx="6" ry="11" fill-opacity="0.7" transform="rotate(288 32 28)" />
+            </svg>
+            MAAG.cu
+        </div>
+        <a href="/admin_login"
+            style="color: white; text-decoration: none; font-size: 0.9rem; background: rgba(255,255,255,0.1); padding: 0.5rem 1.5rem; border-radius: 9999px;">Admin
+            Portal</a>
+    </nav>
+
+    <div class="bloom-card">
+        <h1 class="bloom-h1">Cast your <em>spirit</em> vote</h1>
+        <p style="color: rgba(255,255,255,0.5);">Join the Chandigarh University Digital Election Voting System</p>
+
+        <form method="POST" class="voter-form">
+            <input type="text" name="voter" class="voter-input" placeholder="Enter Your Full Name" required>
+
+            <select name="candidate" class="voter-select" required>
+                <option value="" disabled selected>Select Your Candidate</option>
+                {% for candidate in candidates %}
+                <option value="{{ candidate[1] }}" style="background: #111;">{{ candidate[1] }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="vote-button">Submit Vote</button>
+        </form>
+
+        <a href="/results"
+            style="display: block; margin-top: 2rem; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem;">View
+            Real-time Results →</a>
+    </div>
+</body>
+
+</html>
